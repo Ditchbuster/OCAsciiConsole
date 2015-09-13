@@ -20,7 +20,7 @@ public class AppMain extends JFrame implements KeyListener{
 
     public AppMain(){
         super();
-        terminal = new AsciiPanel();
+        terminal = new AsciiPanel(160,48);
         terminal.write("Hello World",1,1);
         add(terminal);
         pack();

@@ -1,5 +1,7 @@
 package org.ditchbuster.ocasciiconsole;
 
+import org.ditchbuster.ocserver.RobotAi;
+
 import java.awt.Color;
 
 /**

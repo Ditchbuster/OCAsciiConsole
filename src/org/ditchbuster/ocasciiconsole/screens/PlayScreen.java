@@ -2,8 +2,10 @@ package org.ditchbuster.ocasciiconsole.screens;
 
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
+import org.ditchbuster.ocasciiconsole.Robot;
 import org.ditchbuster.ocasciiconsole.World;
 import org.ditchbuster.ocasciiconsole.WorldBuilder;
+import org.ditchbuster.ocserver.RobotFactory;
 
 /**
  * Following tutorial @ http://trystans.blogspot.com/2011/08/roguelike-tutorial-what-and-why.html
@@ -19,15 +21,17 @@ public class PlayScreen implements Screen {
     private int screenHeight;
 
     public PlayScreen(){
-        screenWidth = 80;
-        screenHeight = 21;
+        screenWidth = 160;
+        screenHeight = 45;
         createWorld();
     }
 
     private void createWorld(){
-        world = new WorldBuilder(90, 31)
+        world = new WorldBuilder(300, 50)
                 .makeCaves()
                 .build();
+        RobotFactory rf = new RobotFactory(world);
+        rf.newRobot();
     }
 
     public int getScrollX() {
@@ -41,8 +45,13 @@ public class PlayScreen implements Screen {
             for (int y = 0; y < screenHeight; y++){
                 int wx = x + left;
                 int wy = y + top;
-
-                terminal.write(world.glyph(wx, wy), x, y, world.color(wx, wy));
+                terminal.write(world.getGlyph(wx, wy), x, y, world.getColor(wx, wy));
+            }
+        }
+        for (int i = 0; i<world.numberRobots();i++){
+            Robot robot = world.getRobot(i);
+            if (left<robot.x&&robot.x<left+screenWidth&&top<robot.y&&robot.y<top+screenHeight){
+                terminal.write(robot.getGlyph(),robot.x-left,robot.y-top,robot.getColor());
             }
         }
     }

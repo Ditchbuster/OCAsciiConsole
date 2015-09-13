@@ -10,10 +10,10 @@ public enum Tile {
     BOUNDS('x', AsciiPanel.brightBlack);
 
     private char glyph;
-    public char glyph() { return glyph; }
+    public char getGlyph() { return glyph; }
 
     private Color color;
-    public Color color() { return color; }
+    public Color getColor() { return color; }
 
     Tile(char glyph, Color color){
         this.glyph = glyph;
