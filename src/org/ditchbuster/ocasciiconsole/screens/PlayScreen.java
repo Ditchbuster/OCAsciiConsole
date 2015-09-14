@@ -3,9 +3,10 @@ package org.ditchbuster.ocasciiconsole.screens;
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
 import org.ditchbuster.ocasciiconsole.Robot;
+import org.ditchbuster.ocasciiconsole.RobotFactory;
 import org.ditchbuster.ocasciiconsole.World;
 import org.ditchbuster.ocasciiconsole.WorldBuilder;
-import org.ditchbuster.ocserver.RobotFactory;
+
 
 /**
  * Following tutorial @ http://trystans.blogspot.com/2011/08/roguelike-tutorial-what-and-why.html

@@ -1,7 +1,5 @@
 package org.ditchbuster.ocasciiconsole;
 
-import org.ditchbuster.ocserver.RobotAi;
-
 import java.awt.Color;
 
 /**
@@ -13,8 +11,8 @@ public class Robot {
     public int x;
     public int y;
 
-    private RobotAi ai;
-    public void setRobotAi(RobotAi ai) {this.ai =ai;}
+
+
 
     private char glyph;
     public char getGlyph() {return glyph;}
@@ -31,7 +29,5 @@ public class Robot {
     public void move(int x, int y){
         //TODO: should send a new destination to the server, let the server figure out how to get there
     }
-    public void moveBy(int mx, int my){
-        ai.onEnter(x+mx, y+my, world.tile(x+mx,y+my));
-    }
+
 }
