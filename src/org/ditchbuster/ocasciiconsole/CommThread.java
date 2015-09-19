@@ -1,5 +1,7 @@
 package org.ditchbuster.ocasciiconsole;
 
+import org.ditchbuster.ocasciiconsole.screens.ConnectScreen;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -11,22 +13,23 @@ public class CommThread extends Thread {
 
     String cm;
     Socket socket;
-    ObjectOutputStream out;
-    ObjectInputStream in;
+    PrintWriter out;
+    BufferedReader in;
+    ConnectScreen screen;
 
 
-    public CommThread(Socket socket){
+    public CommThread(Socket socket, ConnectScreen screen){
+        this.screen = screen;
         this.socket = socket;
         System.out.println("Thread trying to create Object Input/Output");
         try{
-            PrintWriter tempOut = new PrintWriter(socket.getOutputStream(),true);
+            //PrintWriter tempOut = new PrintWriter(socket.getOutputStream(),true);
 
             System.out.println("Trying to write out");
-            tempOut.println("console");
+            //tempOut.println("console");
 
-            out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            //out.writeUTF("console\r\n");
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e){
             System.out.println("Exception creating new Input/Output streams");
@@ -40,13 +43,9 @@ public class CommThread extends Thread {
         while(keepGoing) {
             // read a String (which is an object)
             try {
-                cm = in.readObject().toString();
+                cm = in.readLine();
             }
             catch (IOException e) {
-                System.out.println(e);
-                break;
-            }
-            catch (ClassNotFoundException e){
                 System.out.println(e);
                 break;
             }
@@ -56,12 +55,10 @@ public class CommThread extends Thread {
                 System.out.println("Logoff");
                 keepGoing=false;
                 break;
+            }else{
+                screen.addMesg(cm);
             }
-            else{
-                //display(cm);
-                //out.println("FWD " + temp++);
 
-            }
         }
         close();
     }
