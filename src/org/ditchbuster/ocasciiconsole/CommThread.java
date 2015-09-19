@@ -1,6 +1,9 @@
 package org.ditchbuster.ocasciiconsole;
 
 import org.ditchbuster.ocasciiconsole.screens.ConnectScreen;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,11 +26,6 @@ public class CommThread extends Thread {
         this.socket = socket;
         System.out.println("Thread trying to create Object Input/Output");
         try{
-            //PrintWriter tempOut = new PrintWriter(socket.getOutputStream(),true);
-
-            System.out.println("Trying to write out");
-            //tempOut.println("console");
-
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
@@ -40,10 +38,20 @@ public class CommThread extends Thread {
     public void run() {
         // to loop until LOGOUT
         boolean keepGoing = true;
+        JSONObject temp = new JSONObject();
         while(keepGoing) {
             // read a String (which is an object)
             try {
                 cm = in.readLine();
+                JSONParser parser = new JSONParser();
+
+                try {
+                    temp = (JSONObject)parser.parse(cm);
+                }
+                catch(ParseException e){
+                    System.out.println(e.getMessage()+" at " + e.getPosition());
+                }
+                System.out.println(temp);
             }
             catch (IOException e) {
                 System.out.println(e);
@@ -56,7 +64,7 @@ public class CommThread extends Thread {
                 keepGoing=false;
                 break;
             }else{
-                screen.addMesg(cm);
+                screen.addMesg((String)temp.get("CMD")); //TODO dear Lord remove the type casting
             }
 
         }
