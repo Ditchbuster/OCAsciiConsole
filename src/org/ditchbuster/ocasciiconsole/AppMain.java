@@ -7,6 +7,7 @@ import org.ditchbuster.ocasciiconsole.screens.PlayScreen;
 import org.ditchbuster.ocasciiconsole.screens.Screen;
 import org.ditchbuster.ocasciiconsole.screens.StartScreen;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -17,6 +18,8 @@ import java.awt.event.KeyListener;
 public class AppMain extends JFrame implements KeyListener{
     private static final long serialVersionUID= 2342981234120L;
     private AsciiPanel terminal;
+    private JPanel contentPanel;
+    private AsciiPanel options;
     private Screen screen;
     public PlayScreen Pscreen;
     public ConnectScreen Cscreen;
@@ -25,10 +28,16 @@ public class AppMain extends JFrame implements KeyListener{
 
     public AppMain(){
         super();
-        terminal = new AsciiPanel(160,48);
-        terminal.write("Hello World",1,1);
-        add(terminal);
+        terminal = new AsciiPanel(140,48);
+        terminal.write("Hello World", 1, 1);
+        options = new AsciiPanel(20,48);
+        //add(terminal);
+        contentPanel = new JPanel(new BorderLayout());
+        contentPanel.add(terminal, BorderLayout.WEST);
+        contentPanel.add(options, BorderLayout.EAST);
+        add(contentPanel);
         pack();
+
         Sscreen = new StartScreen(this);
         Pscreen = new PlayScreen();
         Cscreen = new ConnectScreen(this);

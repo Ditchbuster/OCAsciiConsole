@@ -28,7 +28,7 @@ public class ConnectScreen implements Screen {
         terminal.write("Connect Screen: Press Enter to return", 1, 1);
         for (int y = 0; y<mesg.size();y++){
 
-            terminal.write(mesg.get(y),0,terminal.getHeightInCharacters()-y-1);
+            terminal.write(mesg.get(y),0,y+2); //+2 puts a space between above title and mesg
         }
     }
 
@@ -47,15 +47,20 @@ public class ConnectScreen implements Screen {
         return this;
     }
     private void Connect(){
+        addMesg("Connecting..");
         try{
             ct=new CommThread(new Socket("127.0.0.1",8809),this);
             ct.start();
+            addMesg("Thread Started");
         }
         catch (IOException e){
             System.out.println(e);
+            addMesg(e.getLocalizedMessage());
         }
     }
     public void addMesg(String in){
         mesg.add(in);
+        ap.repaint();
+
     }
 }
