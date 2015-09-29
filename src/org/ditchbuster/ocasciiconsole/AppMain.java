@@ -24,17 +24,20 @@ public class AppMain extends JFrame implements KeyListener{
     public PlayScreen Pscreen;
     public ConnectScreen Cscreen;
     public StartScreen Sscreen;
-
+    public int hightInChars;
+    public int widthInChars;
 
     public AppMain(){
         super();
-        terminal = new AsciiPanel(140,48);
+        hightInChars = 48;
+        widthInChars = 160;
+        terminal = new AsciiPanel(widthInChars,hightInChars);
         terminal.write("Hello World", 1, 1);
-        options = new AsciiPanel(20,48);
+        //options = new AsciiPanel(20,48);
         //add(terminal);
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.add(terminal, BorderLayout.WEST);
-        contentPanel.add(options, BorderLayout.EAST);
+        //contentPanel.add(options, BorderLayout.EAST);
         add(contentPanel);
         pack();
 

@@ -25,7 +25,7 @@ public class ConnectScreen implements Screen {
 
     @Override
     public void displayOutput(AsciiPanel terminal) {
-        terminal.write("Connect Screen: Press Enter to return", 1, 1);
+        terminal.write("Connect Screen: Press Enter to return", 0, 0);
         for (int y = 0; y<mesg.size();y++){
 
             terminal.write(mesg.get(y),0,y+2); //+2 puts a space between above title and mesg
