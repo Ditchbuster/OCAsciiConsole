@@ -2,10 +2,10 @@ package org.ditchbuster.ocasciiconsole.screens;
 
 import java.awt.event.KeyEvent;
 import asciiPanel.AsciiPanel;
-import org.ditchbuster.ocasciiconsole.Robot;
-import org.ditchbuster.ocasciiconsole.RobotFactory;
-import org.ditchbuster.ocasciiconsole.World;
-import org.ditchbuster.ocasciiconsole.WorldBuilder;
+import org.ditchbuster.ocasciiconsole.*;
+import sun.security.krb5.internal.APOptions;
+
+import javax.swing.*;
 
 
 /**
@@ -15,16 +15,21 @@ import org.ditchbuster.ocasciiconsole.WorldBuilder;
 
 
 public class PlayScreen implements Screen {
+    private AppMain ap;
     private World world;
+    private AsciiPanel screen;
     private int centerX;
     private int centerY;
     private int screenWidth;
     private int screenHeight;
 
-    public PlayScreen(){
-        screenWidth = 160;
-        screenHeight = 45;
+    public PlayScreen(AppMain ap){
+        this.ap = ap;
+        screenWidth = ap.widthInChars;
+        screenHeight = ap.hightInChars;
+        screen = new AsciiPanel(screenWidth,screenHeight);
         createWorld();
+
     }
 
     private void createWorld(){
@@ -70,11 +75,19 @@ public class PlayScreen implements Screen {
         terminal.write('X', centerX - left, centerY - top);
 
     }
+    @Override
+    public void repaint(){
+        int left = getScrollX();
+        int top = getScrollY();
+
+        displayTiles(screen, left, top);
+        screen.write('X', centerX - left, centerY - top);
+    }
 
     public Screen respondToUserInput(KeyEvent key) {
         switch (key.getKeyCode()){
-            case KeyEvent.VK_ESCAPE: return new LoseScreen();
-            case KeyEvent.VK_ENTER: return new WinScreen();
+            case KeyEvent.VK_ESCAPE: return new LoseScreen(ap);
+            case KeyEvent.VK_ENTER: return new WinScreen(ap);
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_H: scrollBy(-1, 0); break;
             case KeyEvent.VK_RIGHT:
@@ -90,5 +103,9 @@ public class PlayScreen implements Screen {
         }
 
         return this;
+    }
+    @Override
+    public JPanel getJPanel() {
+        return screen;
     }
 }
