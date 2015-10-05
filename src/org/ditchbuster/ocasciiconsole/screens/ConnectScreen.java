@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 import org.ditchbuster.ocasciiconsole.AppMain;
 import org.ditchbuster.ocasciiconsole.CommThread;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.Socket;
@@ -12,8 +13,9 @@ import java.util.ArrayList;
 /**
  * Created by CPearson on 9/13/2015.
  */
-public class ConnectScreen implements Screen {
+public class ConnectScreen implements Screen{
     private AppMain ap;
+    private AsciiPanel screen;
     private CommThread ct;
     private ArrayList<String> mesg;
 
@@ -21,6 +23,7 @@ public class ConnectScreen implements Screen {
     public ConnectScreen(AppMain ap){
         this.ap = ap;
         mesg = new ArrayList<>();
+        screen = new AsciiPanel(ap.widthInChars,ap.hightInChars);
     }
 
     @Override
@@ -29,6 +32,14 @@ public class ConnectScreen implements Screen {
         for (int y = 0; y<mesg.size();y++){
 
             terminal.write(mesg.get(y),0,y+2); //+2 puts a space between above title and mesg
+        }
+    }
+    @Override
+    public void repaint(){
+        screen.write("Connect Screen: Press Enter to return", 0, 0);
+        for (int y = 0; y<mesg.size();y++){
+
+            screen.write(mesg.get(y), 0, y + 2); //+2 puts a space between above title and mesg
         }
     }
 
@@ -46,6 +57,12 @@ public class ConnectScreen implements Screen {
         }
         return this;
     }
+
+    @Override
+    public JPanel getJPanel() {
+        return screen;
+    }
+
     private void Connect(){
         addMesg("Connecting..");
         try{

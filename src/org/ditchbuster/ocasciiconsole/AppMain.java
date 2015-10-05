@@ -33,30 +33,37 @@ public class AppMain extends JFrame implements KeyListener{
         widthInChars = 160;
         terminal = new AsciiPanel(widthInChars,hightInChars);
         terminal.write("Hello World", 1, 1);
+
+        Sscreen = new StartScreen(this);
+        Pscreen = new PlayScreen(this);
+        Cscreen = new ConnectScreen(this);
+        screen = Sscreen;
+
         //options = new AsciiPanel(20,48);
         //add(terminal);
         contentPanel = new JPanel(new BorderLayout());
-        contentPanel.add(terminal, BorderLayout.WEST);
+        contentPanel.add(screen.getJPanel(), BorderLayout.WEST);
         //contentPanel.add(options, BorderLayout.EAST);
         add(contentPanel);
         pack();
 
-        Sscreen = new StartScreen(this);
-        Pscreen = new PlayScreen();
-        Cscreen = new ConnectScreen(this);
-        screen = Sscreen;
         addKeyListener(this);
         repaint();
     }
 
     public void repaint(){
-        terminal.clear();
-        screen.displayOutput(terminal);
+        screen.repaint();
         super.repaint();
     }
 
     public void keyPressed(KeyEvent key){
-        screen = screen.respondToUserInput(key);
+        Screen tempScreen = screen.respondToUserInput(key);
+        if (tempScreen!=screen){
+            contentPanel.remove(screen.getJPanel());
+            screen=tempScreen;
+            contentPanel.add(screen.getJPanel(),BorderLayout.WEST);
+            contentPanel.revalidate();
+        }
         repaint();
     }
 

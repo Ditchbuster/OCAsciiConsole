@@ -4,6 +4,7 @@ import asciiPanel.AsciiPanel;
 import org.ditchbuster.ocasciiconsole.AppMain;
 import org.ditchbuster.ocasciiconsole.screens.Screen;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -11,10 +12,12 @@ import java.awt.event.KeyEvent;
  * Created by CPearson on 9/12/2015.
  */
 public class StartScreen implements Screen {
-    AppMain ap;
+    private AppMain ap;
+    private AsciiPanel screen;
 
     public StartScreen(AppMain ap){
         this.ap = ap;
+        screen = new AsciiPanel(ap.widthInChars,ap.hightInChars);
     }
     @Override
     public void displayOutput(AsciiPanel terminal) {
@@ -22,6 +25,12 @@ public class StartScreen implements Screen {
         terminal.writeCenter("-- Press [enter] to start --", 22);
         terminal.write("-- Press [c] to connect --",terminal.getWidthInCharacters()/2-13,terminal.getHeightInCharacters()/2 );
 
+    }
+    @Override
+    public void repaint(){
+        screen.write("Hello World Start Screen", 1, 1);
+        screen.writeCenter("-- Press [enter] to start --", 22);
+        screen.write("-- Press [c] to connect --",screen.getWidthInCharacters()/2-13,screen.getHeightInCharacters()/2 );
     }
 
     @Override
@@ -32,6 +41,10 @@ public class StartScreen implements Screen {
             case KeyEvent.VK_ENTER: return ap.Pscreen;
         }
         return this;
+    }
+    @Override
+    public JPanel getJPanel() {
+        return screen;
     }
 
 }
